@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import model.User;
-import userDAO.UserDAO;
+import service.UserService;
 
-@WebServlet("/login")
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     @Override
@@ -29,9 +29,9 @@ public class LoginServlet extends HttpServlet {
 
         System.out.println("Servlet: Received login request with name='" + name + "', password='" + password + "', remember=" + remember);
 
-        UserDAO userDAO = new UserDAO();
+        UserService userService = new UserService();
         try {
-            User user = userDAO.checkLogin(name, password);
+            User user = userService.checkLogin(name, password);
 
             if (user != null) {
                 System.out.println("Servlet: User logged in successfully: " + user.getName());

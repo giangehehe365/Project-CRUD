@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String savedUsername = "";
+    boolean rememberChecked = false;
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
         for (Cookie c : cookies) {
-            if ("username".equals(c.getName())) {
+            if ("name".equals(c.getName())) {
                 savedUsername = c.getValue();
                 break;
             }
@@ -32,14 +33,16 @@
     <% } %>
 
     <form action="login" method="post">
-        <label>Tên đăng nhập:</label>
-        <input type="text" name="name" required />
+        <label for="name">Tên đăng nhập:</label>
+        <input type="text" name="name" id="name" value="<%= savedUsername %>" required />
 
-        <label>Mật khẩu:</label>
-        <input type="password" name="password" required />
+        <label for="password">Mật khẩu:</label>
+        <input type="password" name="password" id="password" required />
 
-        <label>Ghi nhớ đăng nhập:</label>
-        <input type="checkbox" name="rememberMe" value="yes" />
+        <label>
+            <input type="checkbox" name="rememberMe" value="yes" <%= rememberChecked ? "checked" : "" %> />
+            Ghi nhớ đăng nhập
+        </label>
 
         <button type="submit">Đăng nhập</button>
     </form>

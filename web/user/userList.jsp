@@ -31,6 +31,7 @@
                 <th>Email</th>
                 <th>Country</th>
                 <th>Actions</th>
+                <th>Status</th>
             </tr>
             <c:forEach var="user" items="${listUser}">
                 <tr>
@@ -40,11 +41,22 @@
                     <td><c:out value="${user.country}" /></td>
                     <td>
                         <a href="${pageContext.request.contextPath}/users?action=edit&id=${user.id}">Edit</a>
-                        <a href="${pageContext.request.contextPath}/users?action=delete&id=${user.id}">Delete</a>
+                        <c:if test="${user.status}">
+                            <a href="${pageContext.request.contextPath}/users?action=delete&id=${user.id}" onclick="return confirm('Are you sure?')">Delete</a>
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${user.status}">Active</c:when>
+                            <c:otherwise>Inactive</c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
             </c:forEach>
         </table>
     </div>
+    <center>
+        <a href="${pageContext.request.contextPath}/logout">Log out</a>
+    </center>
 </body>
 </html>

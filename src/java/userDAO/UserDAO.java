@@ -5,6 +5,7 @@
 package userDAO;
 
 import dao.DBConnection;
+import static dao.DBConnection.getConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -183,6 +184,14 @@ public class UserDAO implements IUserDAO{
             }
         }
         return null;
+    }
+    public boolean updateStatus(int id, boolean status) throws SQLException {
+        String sql = "UPDATE users SET status = ? WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setBoolean(1, status);
+            stmt.setInt(2, id);
+            return stmt.executeUpdate() > 0;
+        }
     }
 
 

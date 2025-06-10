@@ -21,7 +21,7 @@
 </center>
 
 <div align="center">
-    <form method="post" action="${pageContext.request.contextPath}/users?action=update">
+    <form method="post" action="${pageContext.request.contextPath}/users?action=edit">
         <input type="hidden" name="id" value="${user.id}" />
         <table border="1" cellpadding="5" cellspacing="0">
             <caption><h2>Edit User</h2></caption>

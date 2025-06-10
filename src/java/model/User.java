@@ -28,10 +28,10 @@ public class User {
     public void setDob(Date dob) {
         this.dob = dob;
     }
-    // Constructor mặc định
+    
     public User() {
     }
-    // Constructor đầy đủ
+    
     public User(int id, String name, String email, String country, String role,
             boolean status, String password, Date dob) {
         this.id = id;
@@ -106,6 +106,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public boolean isStatus() {
+        return status;
+    }   
 
     @Override
     public String toString() {

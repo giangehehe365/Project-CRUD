@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import model.User;
-import userDAO.UserDAO;
 import java.sql.Date;
+import service.UserService;
 
 /**
  *
@@ -25,11 +25,11 @@ import java.sql.Date;
 @WebServlet(name = "UserServlet", urlPatterns = {"/users"})
 public class UserServlet extends HttpServlet{
     private static final long serialVersionUID = 1L;
-    private UserDAO userDAO;
+    private UserService userService;
 
     @Override
     public void init() {
-        userDAO = new UserDAO();
+        userService = new UserService();
     }
     
     @Override
@@ -89,7 +89,7 @@ public class UserServlet extends HttpServlet{
 
     private void listUser(HttpServletRequest request, HttpServletResponse response)
         throws SQLException, IOException, ServletException {
-        List<User> listUser = userDAO.selectAllUsers();
+        List<User> listUser = userService.getAllUsers();
         request.setAttribute("listUser", listUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/userList.jsp");
         dispatcher.forward(request, response);
@@ -105,7 +105,7 @@ public class UserServlet extends HttpServlet{
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
     throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        User existingUser = userDAO.selectUser(id);
+        User existingUser = userService.getUserById(id);
         request.setAttribute("user", existingUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/editUser.jsp");
         dispatcher.forward(request, response);
@@ -120,10 +120,10 @@ public class UserServlet extends HttpServlet{
         String role = request.getParameter("role");
         boolean status = "1".equals(request.getParameter("status"));
         String password = request.getParameter("password");
-        Date dob = Date.valueOf(request.getParameter("dob")); // yyyy-MM-dd
+        Date dob = Date.valueOf(request.getParameter("dob")); 
 
         User newUser = new User(name, email, country, role, status, password, dob);
-        userDAO.insertUser(newUser);
+        userService.createUser(newUser);
         response.sendRedirect(request.getContextPath() + "/users");
     }
 
@@ -140,7 +140,7 @@ public class UserServlet extends HttpServlet{
         Date dob = Date.valueOf(request.getParameter("dob"));
 
         User updatedUser = new User(id, name, email, country, role, status, password, dob);
-        boolean success = userDAO.updateUser(updatedUser);
+        boolean success = userService.updateUser(updatedUser);
 
         if (success) {
             response.sendRedirect(request.getContextPath() + "/users");
@@ -152,9 +152,10 @@ public class UserServlet extends HttpServlet{
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
-    throws SQLException, IOException, ServletException {
+        throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
-        userDAO.deleteUser(id);
+        userService.deactivateUser(id); 
         response.sendRedirect(request.getContextPath() + "/users");
     }
+
 }
